@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Coordinator", address: "", role: "Manager", image: "11.png" },
   ];
 
+  window.botData = botData; // make global
+
   const container = document.getElementById("bot-container");
 
   botData.forEach((bot, index) => {
@@ -62,7 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setInterval(() => {
     botStates.forEach((state, index) => {
-      if (state && botWallets[index]) updateBot(index);
+      if (state && botWallets[index]) {
+        updateBot(index);
+        runBotLogic(index);
+      }
     });
   }, 15000);
 });
@@ -160,41 +165,51 @@ async function runBotLogic(index) {
 
   switch (bot.name.toLowerCase()) {
     case "market maker":
-      console.log(`[${bot.name}] Running market making logic for ${address}`);
+      console.log(`[${bot.name}] Placing mock bid/ask on DEX for ${address}`);
       break;
+
     case "arbitrage":
-      console.log(`[${bot.name}] Checking price gaps...`);
+      console.log(`[${bot.name}] Checking price gaps between DEXes...`);
       break;
+
     case "price impact":
-      console.log(`[${bot.name}] Monitoring price impact...`);
+      console.log(`[${bot.name}] Monitoring price slippage...`);
       break;
+
     case "rebalancer":
-      console.log(`[${bot.name}] Rebalancing portfolio...`);
+      console.log(`[${bot.name}] Rebalancing assets to target weights...`);
       break;
+
     case "auto swapper":
-      console.log(`[${bot.name}] Auto-swapping based on signals...`);
+      console.log(`[${bot.name}] Triggering swap based on signal...`);
       break;
+
     case "multi arbitrage":
-      console.log(`[${bot.name}] Scanning multi-hop arbitrage...`);
+      console.log(`[${bot.name}] Executing multi-hop arbitrage strategy...`);
       break;
+
     case "portfolio adjust":
-      console.log(`[${bot.name}] Adjusting portfolio weights...`);
+      console.log(`[${bot.name}] Shifting portfolio allocation...`);
       break;
+
     case "volume simulator":
-      console.log(`[${bot.name}] Simulating volume...`);
+      console.log(`[${bot.name}] Emulating volume injection...`);
       break;
+
     case "trend watcher":
-      console.log(`[${bot.name}] Analyzing trend data...`);
+      console.log(`[${bot.name}] Scanning for price trend patterns...`);
       break;
+
     case "profit tracker":
-      console.log(`[${bot.name}] Calculating PnL...`);
+      console.log(`[${bot.name}] Summing up real-time PnL...`);
       break;
+
     case "coordinator":
-      console.log(`[${bot.name}] Coordinating team logic...`);
+      console.log(`[${bot.name}] Managing coordination of other bots...`);
       break;
+
     default:
-      console.log(`[Bot ${index}] Unknown role.`);
+      console.log(`[Bot ${index}] Unknown bot name.`);
   }
 }
-
 
