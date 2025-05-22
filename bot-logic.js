@@ -1,126 +1,70 @@
 // bot-logic.js
 
-// ตัวอย่างสถานะเบื้องต้นของแต่ละบอท
-const botStatus = Array.from({ length: 11 }, (_, i) => ({
-  running: false,
-  intervalId: null,
-}));
+export async function runBotLogic(index, botData, botWallets) {
+  const bot = botData[index];
+  const signer = botWallets[index];
+  if (!signer) return;
 
-// ----------- BOT 1: Market Maker -----------
-function runMarketMaker(index) {
-  console.log(`Market Maker Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    // ตัวอย่าง logic
-    console.log(`[Bot ${index}] Providing liquidity on DEX...`);
-  }, 5000);
-}
+  const address = await signer.getAddress();
 
-// ----------- BOT 2: Arbitrage -----------
-function runArbitrage(index) {
-  console.log(`Arbitrage Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Scanning for arbitrage opportunities...`);
-  }, 6000);
-}
+  switch (bot.name.toLowerCase()) {
+    case "market maker":
+      console.log(`[${bot.name}] Running market making logic for ${address}`);
+      // TODO: Add DEX interaction logic here
+      break;
 
-// ----------- BOT 3: Price Impact Checker -----------
-function runPriceImpact(index) {
-  console.log(`Price Impact Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Monitoring price slippage...`);
-  }, 5500);
-}
+    case "arbitrage":
+      console.log(`[${bot.name}] Checking price gaps for ${address}`);
+      // TODO: Compare token prices across DEXs
+      break;
 
-// ----------- BOT 4: Rebalancer -----------
-function runRebalancer(index) {
-  console.log(`Rebalancer Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Rebalancing token ratios...`);
-  }, 8000);
-}
+    case "price impact":
+      console.log(`[${bot.name}] Monitoring price impact for ${address}`);
+      // TODO: Monitor slippage and market impact
+      break;
 
-// ----------- BOT 5: Auto Swapper -----------
-function runAutoSwapper(index) {
-  console.log(`Auto Swapper Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Auto-swapping tokens if trigger met...`);
-  }, 4500);
-}
+    case "rebalancer":
+      console.log(`[${bot.name}] Rebalancing portfolio for ${address}`);
+      // TODO: Auto adjust token ratios
+      break;
 
-// ----------- BOT 6: Multi Arbitrage -----------
-function runMultiArbitrage(index) {
-  console.log(`Multi Arbitrage Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Multi-hop arbitrage scanning...`);
-  }, 7000);
-}
+    case "auto swapper":
+      console.log(`[${bot.name}] Auto-swapping based on triggers for ${address}`);
+      // TODO: Watch price thresholds to trigger swaps
+      break;
 
-// ----------- BOT 7: Portfolio Adjust -----------
-function runPortfolioAdjust(index) {
-  console.log(`Portfolio Adjust Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Adjusting portfolio allocations...`);
-  }, 8500);
-}
+    case "multi arbitrage":
+      console.log(`[${bot.name}] Executing multi-hop arbitrage for ${address}`);
+      // TODO: Chain swaps across DEXs
+      break;
 
-// ----------- BOT 8: Volume Simulator -----------
-function runVolumeSimulator(index) {
-  console.log(`Volume Simulator Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Simulating trade volume...`);
-  }, 4000);
-}
+    case "portfolio adjust":
+      console.log(`[${bot.name}] Adjusting portfolio weights for ${address}`);
+      // TODO: Adjust holdings to meet target weights
+      break;
 
-// ----------- BOT 9: Trend Watcher -----------
-function runTrendWatcher(index) {
-  console.log(`Trend Watcher Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Watching price trends...`);
-  }, 6200);
-}
+    case "volume simulator":
+      console.log(`[${bot.name}] Simulating trading volume for ${address}`);
+      // TODO: Create fake volume for pairs
+      break;
 
-// ----------- BOT 10: Profit Tracker -----------
-function runProfitTracker(index) {
-  console.log(`Profit Tracker Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Calculating PnL...`);
-  }, 5000);
-}
+    case "trend watcher":
+      console.log(`[${bot.name}] Analyzing trends for ${address}`);
+      // TODO: Analyze market trends or signals
+      break;
 
-// ----------- BOT 11: Coordinator -----------
-function runCoordinator(index) {
-  console.log(`Coordinator Bot [${index}] started`);
-  botStatus[index].intervalId = setInterval(() => {
-    console.log(`[Bot ${index}] Managing command dispatch to team bots...`);
-  }, 3000);
-}
+    case "profit tracker":
+      console.log(`[${bot.name}] Tracking profits/losses for ${address}`);
+      // TODO: Calculate and record PnL data
+      break;
 
-// ----------- START / STOP CONTROL -----------
-const botFunctions = [
-  runMarketMaker,
-  runArbitrage,
-  runPriceImpact,
-  runRebalancer,
-  runAutoSwapper,
-  runMultiArbitrage,
-  runPortfolioAdjust,
-  runVolumeSimulator,
-  runTrendWatcher,
-  runProfitTracker,
-  runCoordinator,
-];
+    case "coordinator":
+      console.log(`[${bot.name}] Coordinating all bots from ${address}`);
+      // TODO: Send signals or sync with others
+      break;
 
-function startBot(index) {
-  if (!botStatus[index].running) {
-    botFunctions[index](index);
-    botStatus[index].running = true;
+    default:
+      console.log(`[Bot ${index}] Unknown role: ${bot.name}`);
   }
 }
 
-function stopBot(index) {
-  if (botStatus[index].running) {
-    clearInterval(botStatus[index].intervalId);
-    botStatus[index].running = false;
-    console.log(`Bot [${index}] stopped`);
-  }
-}
