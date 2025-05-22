@@ -60,4 +60,24 @@ window.connectWallet = async function(index) {
   }
 };
 
-// startBot(index), stopBot(index) ถูกโหลดจาก bot-logic.js
+window.startBot = async function(index) {
+  if (!botWallets[index]) {
+    alert("Connect wallet ก่อน");
+    return;
+  }
+
+  try {
+    const signer = botWallets[index];
+    const tx = await signer.sendTransaction({
+      to: signer.address,
+      value: ethers.utils.parseEther("0.000001"), // dummy tx
+    });
+    console.log(`Bot ${index} ส่งธุรกรรมแล้ว:`, tx.hash);
+  } catch (e) {
+    console.error(`Bot ${index} ส่งธุรกรรมล้มเหลว:`, e);
+  }
+};
+
+window.stopBot = function(index) {
+  console.log(`Bot ${index} หยุดการทำงาน (mock)`);
+};
