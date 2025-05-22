@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Coordinator", address: "", role: "Manager", image: "11.png" },
   ];
 
-  window.botData = botData; // make global
-
   const container = document.getElementById("bot-container");
 
   botData.forEach((bot, index) => {
@@ -64,10 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setInterval(() => {
     botStates.forEach((state, index) => {
-      if (state && botWallets[index]) {
-        updateBot(index);
-        runBotLogic(index);
-      }
+      if (state && botWallets[index]) updateBot(index);
     });
   }, 15000);
 });
@@ -97,6 +92,7 @@ async function updateBot(index) {
     await updatePnL(index, parseFloat(etherString));
     await updateTokens(index, address);
     drawPriceChart(index);
+    await runBotLogic(index);
   } catch (err) {
     console.error(`Bot ${index} update error:`, err);
   }
@@ -116,6 +112,7 @@ async function updatePnL(index, ethBalance) {
 
 async function updateTokens(index, address) {
   try {
+    // ตัวอย่างใช้ dummy data จริงควรดึงผ่าน API เช่น Covalent, Alchemy หรือ Ethplorer
     const mockTokens = [
       { symbol: "USDC", amount: 120.45 },
       { symbol: "MATIC", amount: 320.12 }
@@ -152,7 +149,6 @@ window.toggleBot = function(index) {
 
   if (botStates[index] && botWallets[index]) {
     updateBot(index);
-    runBotLogic(index);
   }
 };
 
@@ -164,52 +160,61 @@ async function runBotLogic(index) {
   const address = await signer.getAddress();
 
   switch (bot.name.toLowerCase()) {
-    case "market maker":
-      console.log(`[${bot.name}] Placing mock bid/ask on DEX for ${address}`);
+    case "market maker": {
+      const tickLower = parseInt(localStorage.getItem("tickLower"), 10);
+      const tickUpper = parseInt(localStorage.getItem("tickUpper"), 10);
+
+      if (isNaN(tickLower) || isNaN(tickUpper)) {
+        console.warn(`[${bot.name}] Tick range not set. Please configure in tick-settings.html`);
+        return;
+      }
+
+      console.log(`[${bot.name}] Providing liquidity in range: [${tickLower}, ${tickUpper}]`);
       break;
+    }
 
     case "arbitrage":
-      console.log(`[${bot.name}] Checking price gaps between DEXes...`);
+      console.log(`[${bot.name}] Checking price gaps...`);
       break;
 
     case "price impact":
-      console.log(`[${bot.name}] Monitoring price slippage...`);
+      console.log(`[${bot.name}] Monitoring price impact...`);
       break;
 
     case "rebalancer":
-      console.log(`[${bot.name}] Rebalancing assets to target weights...`);
+      console.log(`[${bot.name}] Rebalancing portfolio...`);
       break;
 
     case "auto swapper":
-      console.log(`[${bot.name}] Triggering swap based on signal...`);
+      console.log(`[${bot.name}] Auto-swapping based on signals...`);
       break;
 
     case "multi arbitrage":
-      console.log(`[${bot.name}] Executing multi-hop arbitrage strategy...`);
+      console.log(`[${bot.name}] Scanning multi-hop arbitrage...`);
       break;
 
     case "portfolio adjust":
-      console.log(`[${bot.name}] Shifting portfolio allocation...`);
+      console.log(`[${bot.name}] Adjusting portfolio weights...`);
       break;
 
     case "volume simulator":
-      console.log(`[${bot.name}] Emulating volume injection...`);
+      console.log(`[${bot.name}] Simulating volume...`);
       break;
 
     case "trend watcher":
-      console.log(`[${bot.name}] Scanning for price trend patterns...`);
+      console.log(`[${bot.name}] Analyzing trend data...`);
       break;
 
     case "profit tracker":
-      console.log(`[${bot.name}] Summing up real-time PnL...`);
+      console.log(`[${bot.name}] Calculating PnL...`);
       break;
 
     case "coordinator":
-      console.log(`[${bot.name}] Managing coordination of other bots...`);
+      console.log(`[${bot.name}] Coordinating team logic...`);
       break;
 
     default:
-      console.log(`[Bot ${index}] Unknown bot name.`);
+      console.log(`[Bot ${index}] Unknown role.`);
   }
 }
 
