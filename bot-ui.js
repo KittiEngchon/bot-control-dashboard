@@ -6,6 +6,17 @@ let botWallets = new Array(11).fill(null);
 
 const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
+async function getETHPrice() {
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+    const data = await res.json();
+    return data.ethereum.usd;
+  } catch (err) {
+    console.error("Error fetching ETH price:", err);
+    return null;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const botData = [
     { name: "Market Maker", address: "", role: "Liquidity", image: "1.png" },
@@ -55,10 +66,22 @@ window.connectWallet = async function(index) {
     const balance = await provider.getBalance(address);
     const etherString = ethers.utils.formatEther(balance);
     document.getElementById(`balance-${index}`).innerText = parseFloat(etherString).toFixed(4) + " ETH";
+
+    updatePnL(index, parseFloat(etherString));
   } catch (err) {
     console.error("Wallet connection error:", err);
   }
 };
+
+async function updatePnL(index, ethBalance) {
+  const price = await getETHPrice();
+  if (!price) {
+    document.getElementById(`pnl-${index}`).innerText = "Error";
+    return;
+  }
+  const usdValue = ethBalance * price;
+  document.getElementById(`pnl-${index}`).innerText = `$${usdValue.toFixed(2)}`;
+}
 
 window.startBot = async function(index) {
   if (!botWallets[index]) {
@@ -70,7 +93,7 @@ window.startBot = async function(index) {
     const signer = botWallets[index];
     const tx = await signer.sendTransaction({
       to: signer.address,
-      value: ethers.utils.parseEther("0.000001"), // dummy tx
+      value: ethers.utils.parseEther("0.000001"),
     });
     console.log(`Bot ${index} ส่งธุรกรรมแล้ว:`, tx.hash);
   } catch (e) {
