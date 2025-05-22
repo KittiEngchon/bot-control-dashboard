@@ -2,98 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tick Settings</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background: #f9f9f9;
-    }
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      margin-top: 2rem;
-      width: 100%;
-      padding: 0.75rem;
-      background: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    .status {
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: bold;
-      color: green;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h2>Market Maker Tick Settings</h2>
 
-    <label for="tickLower">Tick Lower</label>
-    <input type="number" id="tickLower" placeholder="เช่น 2500" />
+    <label for="token0">Token 0 (Base):</label>
+    <input type="text" id="token0" placeholder="e.g. USDC" />
 
-    <label for="tickUpper">Tick Upper</label>
-    <input type="number" id="tickUpper" placeholder="เช่น 2700" />
+    <label for="token1">Token 1 (Quote):</label>
+    <input type="text" id="token1" placeholder="e.g. MATIC" />
 
-    <button onclick="saveTicks()">บันทึกค่าช่วงราคา</button>
+    <label for="tickLower">Tick Lower:</label>
+    <input type="number" id="tickLower" placeholder="e.g. 2100" />
 
-    <div class="status" id="status"></div>
+    <label for="tickUpper">Tick Upper:</label>
+    <input type="number" id="tickUpper" placeholder="e.g. 2500" />
+
+    <button onclick="saveTickSettings()">Save Settings</button>
+
+    <p id="status"></p>
   </div>
 
-  <script>
-    function saveTicks() {
-      const tickLower = parseFloat(document.getElementById('tickLower').value);
-      const tickUpper = parseFloat(document.getElementById('tickUpper').value);
+  <script src="tick-settings.js"></script>
+</body>
+</html>
 
-      if (isNaN(tickLower) || isNaN(tickUpper)) {
-        document.getElementById('status').innerText = "กรุณาใส่ค่าทั้งสองช่องให้ถูกต้อง";
-        document.getElementById('status').style.color = "red";
-        return;
-      }
-
-      localStorage.setItem("tickSettings", JSON.stringify({ tickLower, tickUpper }));
-      document.getElementById('status').innerText = "✅ บันทึกเรียบร้อยแล้ว!";
-      document.getElementById('status').style.color = "green";
-    }
-
-    // โหลดค่าจาก localStorage ถ้ามี
-    window.onload = () => {
-      const saved = JSON.parse(localStorage.getItem("tickSettings"));
-      if (saved) {
-        document.getElementById('tickLower').value = saved.tickLower;
-        document.getElementById('tickUpper').value = saved.tickUpper;
-      }
     }
   </script>
 </body>
