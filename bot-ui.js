@@ -112,7 +112,6 @@ async function updatePnL(index, ethBalance) {
 
 async function updateTokens(index, address) {
   try {
-    // ตัวอย่างใช้ dummy data จริงควรดึงผ่าน API เช่น Covalent, Alchemy หรือ Ethplorer
     const mockTokens = [
       { symbol: "USDC", amount: 120.45 },
       { symbol: "MATIC", amount: 320.12 }
@@ -161,15 +160,15 @@ async function runBotLogic(index) {
 
   switch (bot.name.toLowerCase()) {
     case "market maker": {
-      const tickLower = parseInt(localStorage.getItem("tickLower"), 10);
-      const tickUpper = parseInt(localStorage.getItem("tickUpper"), 10);
-
-      if (isNaN(tickLower) || isNaN(tickUpper)) {
-        console.warn(`[${bot.name}] Tick range not set. Please configure in tick-settings.html`);
+      const settings = JSON.parse(localStorage.getItem("marketMakerTickSettings"));
+      if (!settings || isNaN(settings.tickLower) || isNaN(settings.tickUpper)) {
+        console.warn(`[${bot.name}] Tick settings not found or invalid. Set them in tick-settings.html`);
         return;
       }
+      const { token0, token1, tickLower, tickUpper } = settings;
+      console.log(`[${bot.name}] Preparing to provide liquidity in range [${tickLower}, ${tickUpper}] between ${token0} and ${token1}`);
 
-      console.log(`[${bot.name}] Providing liquidity in range: [${tickLower}, ${tickUpper}]`);
+      // TODO: เชื่อมกับ contract จริง เช่น Uniswap V3 / QuickSwap V3 NFT Position Manager
       break;
     }
 
@@ -217,4 +216,3 @@ async function runBotLogic(index) {
       console.log(`[Bot ${index}] Unknown role.`);
   }
 }
-
