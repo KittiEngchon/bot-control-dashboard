@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bot Control Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4">
+  <header class="mb-6 text-center">
+    <h1 class="text-4xl font-bold">🤖 แดชบอร์ดควบคุมบอท 11 ตัว</h1>
+    <p class="text-gray-400 mt-2">จัดการบอทเทรดทั้งหมดได้จากที่เดียว</p>
+  </header>
+
+  <div class="flex justify-center mb-4 space-x-4">
+    <button class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-xl shadow">▶ เริ่มทั้งหมด</button>
+    <button class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-xl shadow">■ หยุดทั้งหมด</button>
+  </div>
+
+  <div id="bot-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- บอทจะถูกโหลดแบบไดนามิกจาก JavaScript -->
+  </div>
+
+  <script>
+    const bots = [
+      { name: "Market Maker", wallet: "0xAbc1...1234", role: "ทำราคาในตลาด" },
+      { name: "Arbitrage Bot", wallet: "0xAbc2...2345", role: "หากำไรจากราคาต่าง DEX" },
+      { name: "Impact Bot", wallet: "0xAbc3...3456", role: "ทำราคาเพื่อกระทบกลไกตลาด" },
+      { name: "Rebalancer", wallet: "0xAbc4...4567", role: "รักษาสัดส่วน Liquidity Pool" },
+      { name: "Auto Swapper", wallet: "0xAbc5...5678", role: "แปลงเหรียญอัตโนมัติ" },
+      { name: "Multi-Arb", wallet: "0xAbc6...6789", role: "ไล่ Arbitrage ข้ามหลาย Chain" },
+      { name: "Portfolio Adjust", wallet: "0xAbc7...7890", role: "ปรับพอร์ตเหรียญอัตโนมัติ" },
+      { name: "Volume Simulator", wallet: "0xAbc8...8901", role: "จำลองปริมาณซื้อขาย" },
+      { name: "Buy Wall Bot", wallet: "0xAbc9...9012", role: "ตั้ง Buy wall หลอกราคา" },
+      { name: "Sell Wall Bot", wallet: "0xAbcA...0123", role: "ตั้ง Sell wall ควบคุมราคา" },
+      { name: "Trend Rider", wallet: "0xAbcB...9999", role: "วิ่งตามเทรนด์ราคา" },
+    ];
+
+    const grid = document.getElementById("bot-grid");
+
+    bots.forEach((bot, index) => {
+      const card = document.createElement("div");
+      card.className = "bg-gray-800 rounded-2xl p-4 shadow-md space-y-3";
+
+      card.innerHTML = `
+        <div class="flex items-center space-x-4">
+          <img src="assets/bot${index + 1}.png" alt="Bot Avatar" class="w-12 h-12 rounded-full bg-white" />
+          <div>
+            <h2 class="text-xl font-semibold">${bot.name}</h2>
+            <p class="text-sm text-gray-400">${bot.role}</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-300">กระเป๋า: <span class="font-mono">${bot.wallet}</span></p>
+        <div class="flex items-center space-x-2">
+          <button class="bg-green-500 hover:bg-green-400 px-4 py-1 rounded">เริ่ม</button>
+          <button class="bg-red-500 hover:bg-red-400 px-4 py-1 rounded">หยุด</button>
+          <button class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded">Connect Wallet</button>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
