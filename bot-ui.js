@@ -3,6 +3,8 @@
 import { ethers } from "https://cdn.ethers.io/lib/ethers-5.6.esm.min.js";
 
 let botWallets = new Array(11).fill(null);
+let botStates = JSON.parse(localStorage.getItem("botStates") || "[]");
+if (botStates.length < 11) botStates = new Array(11).fill(false);
 
 const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
@@ -46,12 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>PnL:</strong> <span id="pnl-${index}">--</span></p>
       <div class="btn-group">
         <button onclick="connectWallet(${index})">Connect Wallet</button>
-        <button onclick="startBot(${index})">Start</button>
-        <button onclick="stopBot(${index})">Stop</button>
+        <button id="start-${index}" onclick="toggleBot(${index})">${botStates[index] ? "Stop" : "Start"}</button>
       </div>
     `;
     container.appendChild(card);
+
+    if (botStates[index]) {
+      updateBot(index);
+    }
   });
+
+  setInterval(() => {
+    botStates.forEach((state, index) => {
+      if (state && botWallets[index]) updateBot(index);
+    });
+  }, 15000);
 });
 
 window.connectWallet = async function(index) {
@@ -63,15 +74,24 @@ window.connectWallet = async function(index) {
     botWallets[index] = signer;
     document.getElementById(`wallet-${index}`).innerText = address;
 
-    const balance = await provider.getBalance(address);
-    const etherString = ethers.utils.formatEther(balance);
-    document.getElementById(`balance-${index}`).innerText = parseFloat(etherString).toFixed(4) + " ETH";
-
-    updatePnL(index, parseFloat(etherString));
+    updateBot(index);
   } catch (err) {
     console.error("Wallet connection error:", err);
   }
 };
+
+async function updateBot(index) {
+  try {
+    const signer = botWallets[index];
+    const address = await signer.getAddress();
+    const balance = await provider.getBalance(address);
+    const etherString = ethers.utils.formatEther(balance);
+    document.getElementById(`balance-${index}`).innerText = parseFloat(etherString).toFixed(4) + " ETH";
+    await updatePnL(index, parseFloat(etherString));
+  } catch (err) {
+    console.error(`Bot ${index} update error:`, err);
+  }
+}
 
 async function updatePnL(index, ethBalance) {
   const price = await getETHPrice();
@@ -83,24 +103,12 @@ async function updatePnL(index, ethBalance) {
   document.getElementById(`pnl-${index}`).innerText = `$${usdValue.toFixed(2)}`;
 }
 
-window.startBot = async function(index) {
-  if (!botWallets[index]) {
-    alert("Connect wallet ก่อน");
-    return;
-  }
+window.toggleBot = function(index) {
+  botStates[index] = !botStates[index];
+  localStorage.setItem("botStates", JSON.stringify(botStates));
+  document.getElementById(`start-${index}`).innerText = botStates[index] ? "Stop" : "Start";
 
-  try {
-    const signer = botWallets[index];
-    const tx = await signer.sendTransaction({
-      to: signer.address,
-      value: ethers.utils.parseEther("0.000001"),
-    });
-    console.log(`Bot ${index} ส่งธุรกรรมแล้ว:`, tx.hash);
-  } catch (e) {
-    console.error(`Bot ${index} ส่งธุรกรรมล้มเหลว:`, e);
+  if (botStates[index] && botWallets[index]) {
+    updateBot(index);
   }
-};
-
-window.stopBot = function(index) {
-  console.log(`Bot ${index} หยุดการทำงาน (mock)`);
 };
