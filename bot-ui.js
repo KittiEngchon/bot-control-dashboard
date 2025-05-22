@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="btn-group">
         <button onclick="connectWallet(${index})">Connect Wallet</button>
         <button id="start-${index}" onclick="toggleBot(${index})">${botStates[index] ? "Stop" : "Start"}</button>
+        <button onclick="runBotLogic(${index})">Run Logic</button>
       </div>
     `;
     container.appendChild(card);
@@ -111,7 +112,6 @@ async function updatePnL(index, ethBalance) {
 
 async function updateTokens(index, address) {
   try {
-    // ตัวอย่างใช้ dummy data จริงควรดึงผ่าน API เช่น Covalent, Alchemy หรือ Ethplorer
     const mockTokens = [
       { symbol: "USDC", amount: 120.45 },
       { symbol: "MATIC", amount: 320.12 }
@@ -150,3 +150,23 @@ window.toggleBot = function(index) {
     updateBot(index);
   }
 };
+
+window.runBotLogic = async function(index) {
+  const botName = document.querySelectorAll(".bot-card h3")[index].innerText;
+  console.log(`Running logic for Bot #${index + 1} - ${botName}`);
+  // ตัวอย่างเรียก Logic จริงตามประเภท
+  switch (botName.toLowerCase()) {
+    case "market maker":
+      console.log("Simulate market making logic...");
+      break;
+    case "arbitrage":
+      console.log("Simulate arbitrage logic...");
+      break;
+    case "price impact":
+      console.log("Monitoring price impact...");
+      break;
+    default:
+      console.log("No logic defined for:", botName);
+  }
+};
+
