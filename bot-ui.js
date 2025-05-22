@@ -45,7 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Role:</strong> ${bot.role}</p>
       <p><strong>Wallet:</strong> <span id="wallet-${index}">Not connected</span></p>
       <p><strong>Balance:</strong> <span id="balance-${index}">--</span></p>
-      <p><strong>PnL:</strong> <span id="pnl-${index}">--</span></p>
+      <p><strong>ETH PnL:</strong> <span id="pnl-${index}">--</span></p>
+      <p><strong>Token Holdings:</strong> <span id="tokens-${index}">--</span></p>
+      <canvas id="chart-${index}" width="200" height="80"></canvas>
       <div class="btn-group">
         <button onclick="connectWallet(${index})">Connect Wallet</button>
         <button id="start-${index}" onclick="toggleBot(${index})">${botStates[index] ? "Stop" : "Start"}</button>
@@ -88,6 +90,8 @@ async function updateBot(index) {
     const etherString = ethers.utils.formatEther(balance);
     document.getElementById(`balance-${index}`).innerText = parseFloat(etherString).toFixed(4) + " ETH";
     await updatePnL(index, parseFloat(etherString));
+    await updateTokens(index, address);
+    drawPriceChart(index);
   } catch (err) {
     console.error(`Bot ${index} update error:`, err);
   }
@@ -100,7 +104,41 @@ async function updatePnL(index, ethBalance) {
     return;
   }
   const usdValue = ethBalance * price;
-  document.getElementById(`pnl-${index}`).innerText = `$${usdValue.toFixed(2)}`;
+  const pnlSpan = document.getElementById(`pnl-${index}`);
+  pnlSpan.innerText = `$${usdValue.toFixed(2)}`;
+  pnlSpan.style.color = usdValue >= 0 ? "green" : "red";
+}
+
+async function updateTokens(index, address) {
+  try {
+    // ตัวอย่างใช้ dummy data จริงควรดึงผ่าน API เช่น Covalent, Alchemy หรือ Ethplorer
+    const mockTokens = [
+      { symbol: "USDC", amount: 120.45 },
+      { symbol: "MATIC", amount: 320.12 }
+    ];
+    const tokenText = mockTokens.map(t => `${t.symbol}: ${t.amount}`).join(", ");
+    document.getElementById(`tokens-${index}`).innerText = tokenText;
+  } catch (err) {
+    console.error("Token fetch error:", err);
+  }
+}
+
+function drawPriceChart(index) {
+  const ctx = document.getElementById(`chart-${index}`).getContext("2d");
+  const data = Array.from({ length: 10 }, () => 1000 + Math.random() * 100);
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: data.map((_, i) => i),
+      datasets: [{
+        label: "Price",
+        data,
+        borderColor: "#4caf50",
+        fill: false
+      }]
+    },
+    options: { responsive: false, scales: { x: { display: false }, y: { display: false } } }
+  });
 }
 
 window.toggleBot = function(index) {
