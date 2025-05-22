@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Coordinator", address: "", role: "Manager", image: "11.png" },
   ];
 
-  window.botData = botData;
-
   const container = document.getElementById("bot-container");
 
   botData.forEach((bot, index) => {
@@ -149,7 +147,7 @@ window.toggleBot = function(index) {
 
   if (botStates[index] && botWallets[index]) {
     updateBot(index);
-    runBotLogic(index); // <-- เพิ่มตรงนี้เพื่อรัน logic ของแต่ละบอท
+    runBotLogic(index);
   }
 };
 
