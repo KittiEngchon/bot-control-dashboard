@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="btn-group">
         <button onclick="connectWallet(${index})">Connect Wallet</button>
         <button id="start-${index}" onclick="toggleBot(${index})">${botStates[index] ? "Stop" : "Start"}</button>
-        <button onclick="runBotLogic(${index})">Run Logic</button>
       </div>
     `;
     container.appendChild(card);
@@ -111,15 +110,44 @@ async function updatePnL(index, ethBalance) {
 }
 
 async function updateTokens(index, address) {
+  const tokenList = [
+    {
+      symbol: "USDC",
+      address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+      decimals: 6,
+    },
+    {
+      symbol: "MATIC",
+      address: "0x0000000000000000000000000000000000001010",
+      decimals: 18,
+      isNative: true,
+    },
+    {
+      symbol: "DAI",
+      address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+      decimals: 18,
+    }
+  ];
+
   try {
-    const mockTokens = [
-      { symbol: "USDC", amount: 120.45 },
-      { symbol: "MATIC", amount: 320.12 }
-    ];
-    const tokenText = mockTokens.map(t => `${t.symbol}: ${t.amount}`).join(", ");
-    document.getElementById(`tokens-${index}`).innerText = tokenText;
+    const results = [];
+
+    for (const token of tokenList) {
+      if (token.isNative) {
+        const balance = await provider.getBalance(address);
+        results.push(`${token.symbol}: ${parseFloat(ethers.utils.formatUnits(balance, token.decimals)).toFixed(2)}`);
+      } else {
+        const abi = ["function balanceOf(address) view returns (uint256)"];
+        const tokenContract = new ethers.Contract(token.address, abi, provider);
+        const balance = await tokenContract.balanceOf(address);
+        results.push(`${token.symbol}: ${parseFloat(ethers.utils.formatUnits(balance, token.decimals)).toFixed(2)}`);
+      }
+    }
+
+    document.getElementById(`tokens-${index}`).innerText = results.join(", ");
   } catch (err) {
     console.error("Token fetch error:", err);
+    document.getElementById(`tokens-${index}`).innerText = "Error";
   }
 }
 
@@ -151,22 +179,4 @@ window.toggleBot = function(index) {
   }
 };
 
-window.runBotLogic = async function(index) {
-  const botName = document.querySelectorAll(".bot-card h3")[index].innerText;
-  console.log(`Running logic for Bot #${index + 1} - ${botName}`);
-  // ตัวอย่างเรียก Logic จริงตามประเภท
-  switch (botName.toLowerCase()) {
-    case "market maker":
-      console.log("Simulate market making logic...");
-      break;
-    case "arbitrage":
-      console.log("Simulate arbitrage logic...");
-      break;
-    case "price impact":
-      console.log("Monitoring price impact...");
-      break;
-    default:
-      console.log("No logic defined for:", botName);
-  }
-};
 
