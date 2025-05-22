@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Coordinator", address: "", role: "Manager", image: "11.png" },
   ];
 
+  window.botData = botData;
+
   const container = document.getElementById("bot-container");
 
   botData.forEach((bot, index) => {
@@ -110,44 +112,15 @@ async function updatePnL(index, ethBalance) {
 }
 
 async function updateTokens(index, address) {
-  const tokenList = [
-    {
-      symbol: "USDC",
-      address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-      decimals: 6,
-    },
-    {
-      symbol: "MATIC",
-      address: "0x0000000000000000000000000000000000001010",
-      decimals: 18,
-      isNative: true,
-    },
-    {
-      symbol: "DAI",
-      address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
-      decimals: 18,
-    }
-  ];
-
   try {
-    const results = [];
-
-    for (const token of tokenList) {
-      if (token.isNative) {
-        const balance = await provider.getBalance(address);
-        results.push(`${token.symbol}: ${parseFloat(ethers.utils.formatUnits(balance, token.decimals)).toFixed(2)}`);
-      } else {
-        const abi = ["function balanceOf(address) view returns (uint256)"];
-        const tokenContract = new ethers.Contract(token.address, abi, provider);
-        const balance = await tokenContract.balanceOf(address);
-        results.push(`${token.symbol}: ${parseFloat(ethers.utils.formatUnits(balance, token.decimals)).toFixed(2)}`);
-      }
-    }
-
-    document.getElementById(`tokens-${index}`).innerText = results.join(", ");
+    const mockTokens = [
+      { symbol: "USDC", amount: 120.45 },
+      { symbol: "MATIC", amount: 320.12 }
+    ];
+    const tokenText = mockTokens.map(t => `${t.symbol}: ${t.amount}`).join(", ");
+    document.getElementById(`tokens-${index}`).innerText = tokenText;
   } catch (err) {
     console.error("Token fetch error:", err);
-    document.getElementById(`tokens-${index}`).innerText = "Error";
   }
 }
 
@@ -176,7 +149,54 @@ window.toggleBot = function(index) {
 
   if (botStates[index] && botWallets[index]) {
     updateBot(index);
+    runBotLogic(index); // <-- เพิ่มตรงนี้เพื่อรัน logic ของแต่ละบอท
   }
 };
+
+async function runBotLogic(index) {
+  const bot = botData[index];
+  const signer = botWallets[index];
+  if (!signer) return;
+
+  const address = await signer.getAddress();
+
+  switch (bot.name.toLowerCase()) {
+    case "market maker":
+      console.log(`[${bot.name}] Running market making logic for ${address}`);
+      break;
+    case "arbitrage":
+      console.log(`[${bot.name}] Checking price gaps...`);
+      break;
+    case "price impact":
+      console.log(`[${bot.name}] Monitoring price impact...`);
+      break;
+    case "rebalancer":
+      console.log(`[${bot.name}] Rebalancing portfolio...`);
+      break;
+    case "auto swapper":
+      console.log(`[${bot.name}] Auto-swapping based on signals...`);
+      break;
+    case "multi arbitrage":
+      console.log(`[${bot.name}] Scanning multi-hop arbitrage...`);
+      break;
+    case "portfolio adjust":
+      console.log(`[${bot.name}] Adjusting portfolio weights...`);
+      break;
+    case "volume simulator":
+      console.log(`[${bot.name}] Simulating volume...`);
+      break;
+    case "trend watcher":
+      console.log(`[${bot.name}] Analyzing trend data...`);
+      break;
+    case "profit tracker":
+      console.log(`[${bot.name}] Calculating PnL...`);
+      break;
+    case "coordinator":
+      console.log(`[${bot.name}] Coordinating team logic...`);
+      break;
+    default:
+      console.log(`[Bot ${index}] Unknown role.`);
+  }
+}
 
 
