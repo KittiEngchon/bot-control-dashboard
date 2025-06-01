@@ -28,13 +28,26 @@ A simple, modular dashboard for managing and configuring automated trading bots.
 git clone https://github.com/KittiEngchon/bot-control-dashboard.git
 cd bot-control-dashboard
 
-├── index.html                  # หน้าหลักแดชบอร์ด
-├── bot-logic.js               # สมองของบอท – จัดการกลยุทธ์และการตัดสินใจ
-├── bot-ui.js                  # การจัดการ UI และปฏิสัมพันธ์ผู้ใช้
-├── bot-wallet-connect.js      # ระบบเชื่อมต่อกระเป๋า (Metamask/Web3)
-├── tick-settings.html         # หน้า UI สำหรับตั้งค่า tick
-├── tick-settings.js           # โลจิกสำหรับ tick และความถี่ของบอท
-└── token-list.json            # รายชื่อเหรียญ/โทเคนที่ระบบรองรับ
+bot-control-dashboard/
+├── bots/
+│   ├── sentinel-bot.js
+│   ├── sniper-bot.js
+│   ├── analyzer-bot.js
+│   ├── strategy-manager.js
+│   ├── trader-bot.js
+│   └── logger-bot.js
+├── core/
+│   ├── event-bus.js        # สื่อสารระหว่างบอท
+│   └── bot-engine.js       # รันรอบ tick + ประสานหลายบอท
+├── ui/
+│   ├── bot-status-panel.js
+│   └── bot-control-panel.js
+├── wallet/
+│   └── wallet-connector.js
+├── config/
+│   └── bot-settings.json
+└── index.html
+
 
 โปรเจกต์นี้ยังอยู่ระหว่างการพัฒนา (Early-stage development)
 
@@ -56,5 +69,15 @@ cd bot-control-dashboard
 | หน้าจอแสดงสถานะการทำงาน         | ⚠️    | UI เริ่มต้นมี modal แต่ยังไม่เป็นกราฟ/ตารางจริง |
 
 
+✅ แนวคิด: Bot ที่ประสานงานกัน
+ไม่ใช่บอทตัวเดียวทำงานแยกกัน แต่เป็นระบบที่ หลายบอทสื่อสาร/ประสานกัน เพื่อให้การตัดสินใจแม่นยำขึ้น หรือแบ่งหน้าที่ เช่น
 
+| บอท                     | หน้าที่                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| 📡 **Sentinel Bot**     | ตรวจจับโอกาสจากตลาด (เช่น ราคา dump/hype) แล้วแจ้งตัวอื่น |
+| 🛒 **Sniper Bot**       | รับสัญญาณจาก Sentinel แล้วเข้าออเดอร์เร็ว                 |
+| 🧠 **Analyzer Bot**     | วิเคราะห์เทรนด์/กราฟย้อนหลัง แล้วแนะนำกลยุทธ์             |
+| 🧬 **Strategy Manager** | เป็นตัวกลางเลือกว่าให้บอทไหนทำงาน                         |
+| 💰 **Trader Bot**       | ทำคำสั่งซื้อ-ขายจริง เมื่อได้รับ "อนุญาต"                 |
+| 🧾 **Logger Bot**       | เก็บบันทึกเทรด, PnL, Gas Fee, Wallet Stats                |
 
