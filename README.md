@@ -38,45 +38,47 @@ git clone https://github.com/KittiEngchon/bot-control-dashboard.git
 cd bot-control-dashboard
 
 bot-control-dashboard/
-├── bots/
+├── bots/                         # โฟลเดอร์รวมบอททั้งหมด
 │   ├── sentinel/
-│   │   ├── index.js
-│   │   └── config.json
+│   │   ├── index.js              # โค้ดหลักบอท
+│   │   └── config.json           # ค่าตั้งเฉพาะบอทนี้
 │   ├── sniper/
 │   │   ├── index.js
 │   │   └── config.json
-│   ├── analyzer/
-│   │   └── index.js
-│   ├── strategy-manager/
-│   │   └── index.js
-│   ├── trader/
-│   │   └── index.js
-│   └── logger/
-│       └── index.js
-│
-├── wallets/
-│   ├── sentinel.json         # wallet+privateKey (เข้ารหัสไว้)
+│   └── trader/
+│       ├── index.js
+│       └── config.json
+
+├── wallets/                      # Private Key ของแต่ละบอท (ต้องเข้ารหัสจริงในโปรดักชัน)
+│   ├── sentinel.json
 │   ├── sniper.json
-│   ├── trader.json
-│   └── ...
-│
-├── core/
-│   ├── event-bus.js          # ส่งสัญญาณระหว่างบอท
-│   ├── bot-engine.js         # รัน tick + loop + sync
-│   └── dex-router.js         # เชื่อม DEX (เช่น Uniswap/Pancake)
-│
-├── ui/
-│   ├── control-panel.js      # UI กดรันแต่ละบอท
-│   └── status-panel.js       # UI แสดงสถานะการทำงานแต่ละตัว
-│
-├── config/
-│   └── system-config.json    # ตั้งค่า tick, chain, default token
-│
+│   └── trader.json
+
+├── dex/                          # โมดูลเชื่อมต่อ DEX
+│   ├── router.js                 # เรียกใช้ QuickSwap / SushiSwap ได้ในไฟล์เดียว
+│   ├── addresses.js              # เก็บ Router Address ของแต่ละ DEX
+│   └── abis/
+│       └── uniswap-v2-router.json
+
+├── core/                         # โมดูลหลักของระบบควบคุม
+│   ├── bot-engine.js             # สั่งรันทุกบอทแบบประสานกัน
+│   ├── event-bus.js              # ส่งข้อมูลระหว่างบอท
+│   └── bot-manager.js            # โหลดและจัดการบอทตาม config
+
+├── ui/                           # Frontend UI (เชื่อม MetaMask)
+│   ├── control-panel.js          # UI ควบคุมแต่ละบอท
+│   ├── wallet-connector.js       # ใช้เชื่อม MetaMask
+│   └── status-panel.js
+
 ├── utils/
-│   ├── logger.js
-│   └── wallet-utils.js       # ฟังก์ชันโหลด wallet แต่ละตัว
-│
-├── index.html
+│   ├── wallet-utils.js           # โหลด wallet (จากไฟล์) ให้บอทแต่ละตัว
+│   └── logger.js
+
+├── config/
+│   └── system-config.json        # ตั้งค่าทั่วไป เช่น ChainID, token base
+
+├── index.js                      # จุดเริ่มรันระบบ
+├── index.html                    # หน้าเว็บ UI
 └── README.md
 
 
