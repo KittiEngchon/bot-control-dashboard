@@ -177,5 +177,92 @@ Trend Rider Bot
 | 7. ทดสอบระบบครบวงจร     | ทดสอบ workflow บอทประสานงานจริง                                                   | ❌ ยังไม่เริ่ม                                  |
 | 8. Deploy และปรับปรุง   | รันบนเซิร์ฟเวอร์จริง, ปรับ UI/UX และความปลอดภัย wallet                            | ❌ ยังไม่เริ่ม                                  |
 
+แผนพัฒนาต่อ (Roadmap Suggested)
+ระยะที่ 1: เสริมความสมบูรณ์ของระบบหลัก
+ปรับปรุงและลงรายละเอียด core bot engine
 
+ลงโค้ดจริงใน bot-engine.js และ event-bus.js
+
+สร้างระบบ tick ที่บอทแต่ละตัวจะทำงานตามเวลาที่กำหนด
+
+เพิ่มระบบ event bus ให้บอทสื่อสารและแชร์สถานะกันได้จริง
+
+พัฒนาระบบเชื่อมต่อ DEX อย่างน้อย QuickSwap / SushiSwap
+
+เขียนฟังก์ชันส่งคำสั่ง swap ผ่าน smart contract บน Polygon
+
+ทดสอบการ swap ด้วย MetaMask (testnet ก่อน)
+
+เพิ่มการ fetch ราคาผ่าน API แบบ real-time
+
+ใช้ Coingecko / CoinMarketCap API หรือ TheGraph สำหรับ Polygon เพื่อดึงราคาล่าสุด
+
+แสดงราคาบน UI dashboard
+
+พัฒนา UI สำหรับแสดงสถานะบอทแบบ real-time
+
+แสดง log / ตารางสถานะ / กราฟสถานะการทำงาน
+
+ปรับ UI ให้ใช้งานง่ายและชัดเจน
+
+ระยะที่ 2: พัฒนา Strategy และ Automation
+กำหนดกลยุทธ์ตัวอย่าง
+
+เริ่มเขียน logic สำหรับ Sniper Bot, Arbitrage Bot, Rebalancer Bot
+
+ทำให้บอทสามารถเปิด/ปิด order ตามสัญญาณตลาดได้
+
+ระบบบันทึก Log และ Backtesting
+
+บันทึกการทำงานและผลลัพธ์แต่ละ tick ของบอท
+
+พัฒนาหน้าจอวิเคราะห์ผลย้อนหลัง
+
+ระบบแจ้งเตือน (Notification)
+
+แจ้งเตือนสถานะบอทผ่าน UI หรือ email / Telegram
+
+ระยะที่ 3: ขยายระบบและเพิ่มความปลอดภัย
+เพิ่มระบบจัดการหลายผู้ใช้ (Multi-user, Authentication)
+
+ใช้ Firebase Auth หรือ OAuth
+
+แยกข้อมูลบอทและ wallet ตามผู้ใช้
+
+พัฒนา backend สำหรับเก็บข้อมูลและประมวลผล (Node.js + DB)
+
+เก็บ wallet credentials อย่างปลอดภัย (เข้ารหัส)
+
+เก็บ log, ตั้งค่า, รายงาน
+
+เพิ่มความปลอดภัยและ sandbox testing
+
+ป้องกันการเข้าถึง wallet โดยไม่ได้รับอนุญาต
+
+ทดสอบระบบอย่างละเอียดก่อนใช้เงินจริง
+
+ระยะที่ 4: ขยาย Ecosystem
+เพิ่ม DEX อื่น ๆ
+
+Uniswap, PancakeSwap, หรือ DEX อื่น ๆ บน chain ต่าง ๆ
+
+พัฒนา AI/ML สำหรับช่วยตัดสินใจเทรด
+
+วิเคราะห์ข้อมูลตลาดแบบเชิงลึก
+
+แนะนำกลยุทธ์หรือทำงานแทนผู้ใช้
+
+เพิ่มฟีเจอร์ Marketplace
+
+ซื้อขายบอทและกลยุทธ์ในระบบ
+
+สรุป
+ขั้นตอน	สถานะปัจจุบัน	ลำดับถัดไปที่แนะนำ
+โครงสร้างโปรเจกต์และบอท	✔️ เสร็จ	ลงรายละเอียด bot-engine และ event-bus
+DEX Integration	❌	เชื่อม swap Smart Contract บน Polygon
+ระบบเทรดอัตโนมัติ	⚠️ มีแนวคิด	เขียน logic tick และกลยุทธ์เบื้องต้น
+UI Dashboard	⚠️ มีต้นแบบ	แสดงสถานะบอทแบบ realtime และ log
+ระบบบันทึกและวิเคราะห์ผล	❌	พัฒนา log และ backtesting
+ระบบความปลอดภัยและ Backend	❌	เพิ่มระบบ auth, backend, encryption
+ขยาย Ecosystem	❌	เพิ่ม DEX, AI, Marketplace
 
