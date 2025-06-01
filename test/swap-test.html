@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swap Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+  <h2>Test Swap via MetaMask (Polygon Mumbai)</h2>
+  <button id="connect">Connect Wallet</button>
+  <button id="swap">Swap MATIC → WMATIC</button>
+
+  <script>
+    let provider, signer;
+
+    const routerAbi = [
+      "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) payable returns (uint[] memory amounts)"
+    ];
+
+    const WMATIC = "0x9c3c9283d3e44854697cd22d3faa240cfb032889"; // WMATIC on Mumbai
+    const routerAddress = "0x1b02da8cb0d097eb8d57a175b88c7d8b47997506"; // SushiSwap Router
+
+    document.getElementById("connect").onclick = async () => {
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
+      alert("Wallet connected!");
+    };
+
+    document.getElementById("swap").onclick = async () => {
+      if (!signer) return alert("Connect wallet first!");
+
+      const router = new ethers.Contract(routerAddress, routerAbi, signer);
+
+      const tx = await router.swapExactETHForTokens(
+        0, // min output
+        [ethers.constants.AddressZero, WMATIC],
+        await signer.getAddress(),
+        Math.floor(Date.now() / 1000) + 60,
+        {
+          value: ethers.utils.parseEther("0.01"),
+          gasLimit: 300000,
+        }
+      );
+
+      console.log("Swap tx sent:", tx.hash);
+      alert("Transaction sent: " + tx.hash);
+    };
+  </script>
+</body>
+</html>
