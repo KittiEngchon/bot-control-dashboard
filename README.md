@@ -8,8 +8,9 @@
 
 🤖 แต่ละ บอทมีกระเป๋าแยกของตัวเอง (wallet address + private key)
 
-บอททำงานประสารกัน
+บอททำงานประสารกัน11ตัว
 
+ไฟล์นี้เปิดใน Google Chrome แล้วเชื่อม MetaMask ได้เลย
 
 A simple, modular dashboard for managing and configuring automated trading bots. Includes wallet integration and tick-based settings.
 
