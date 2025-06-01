@@ -30,23 +30,46 @@ cd bot-control-dashboard
 
 bot-control-dashboard/
 ├── bots/
-│   ├── sentinel-bot.js
-│   ├── sniper-bot.js
-│   ├── analyzer-bot.js
-│   ├── strategy-manager.js
-│   ├── trader-bot.js
-│   └── logger-bot.js
+│   ├── sentinel/
+│   │   ├── index.js
+│   │   └── config.json
+│   ├── sniper/
+│   │   ├── index.js
+│   │   └── config.json
+│   ├── analyzer/
+│   │   └── index.js
+│   ├── strategy-manager/
+│   │   └── index.js
+│   ├── trader/
+│   │   └── index.js
+│   └── logger/
+│       └── index.js
+│
+├── wallets/
+│   ├── sentinel.json         # wallet+privateKey (เข้ารหัสไว้)
+│   ├── sniper.json
+│   ├── trader.json
+│   └── ...
+│
 ├── core/
-│   ├── event-bus.js        # สื่อสารระหว่างบอท
-│   └── bot-engine.js       # รันรอบ tick + ประสานหลายบอท
+│   ├── event-bus.js          # ส่งสัญญาณระหว่างบอท
+│   ├── bot-engine.js         # รัน tick + loop + sync
+│   └── dex-router.js         # เชื่อม DEX (เช่น Uniswap/Pancake)
+│
 ├── ui/
-│   ├── bot-status-panel.js
-│   └── bot-control-panel.js
-├── wallet/
-│   └── wallet-connector.js
+│   ├── control-panel.js      # UI กดรันแต่ละบอท
+│   └── status-panel.js       # UI แสดงสถานะการทำงานแต่ละตัว
+│
 ├── config/
-│   └── bot-settings.json
-└── index.html
+│   └── system-config.json    # ตั้งค่า tick, chain, default token
+│
+├── utils/
+│   ├── logger.js
+│   └── wallet-utils.js       # ฟังก์ชันโหลด wallet แต่ละตัว
+│
+├── index.html
+└── README.md
+
 
 
 โปรเจกต์นี้ยังอยู่ระหว่างการพัฒนา (Early-stage development)
