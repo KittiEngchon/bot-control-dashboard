@@ -5,17 +5,27 @@ const eventBus = require('./event-bus');
 const bots = [];
 
 function createAndStartBots() {
-  const botNames = ['bot01-sniper', 'bot02-sentinel'];
-  botNames.forEach(name => {
-    const bot = new BotEngine(name, { tickInterval: 3000 });
+  const botConfigs = [
+    { name: 'bot01-sniper', tickInterval: 3000 },
+    { name: 'bot02-sentinel', tickInterval: 5000 },
+    { name: 'bot03-arbitrage', tickInterval: 7000 },
+  ];
+
+  botConfigs.forEach(cfg => {
+    const bot = new BotEngine(cfg.name, { tickInterval: cfg.tickInterval });
     bots.push(bot);
     bot.start();
   });
 }
 
-// ฟัง event
-eventBus.on('trade-signal', (data) => {
-  console.log(`[Manager] Received trade signal:`, data);
+eventBus.on('trade-signal', data => {
+  console.log(`[Manager] Trade signal received from ${data.bot}:`, data);
 });
 
 createAndStartBots();
+
+// ตัวอย่างหยุดบอทหลังจาก 20 วินาที
+setTimeout(() => {
+  bots.forEach(bot => bot.stop());
+  console.log('All bots stopped.');
+}, 20000);
