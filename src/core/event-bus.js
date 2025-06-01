@@ -1,8 +1,9 @@
 // src/core/event-bus.js
 const EventEmitter = require('events');
 
-class EventBus extends EventEmitter {}
+class BotEventBus extends EventEmitter {}
 
-const eventBus = new EventBus();
+const eventBus = new BotEventBus();
 
 module.exports = eventBus;
+
