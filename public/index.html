@@ -14,8 +14,8 @@
   </header>
 
   <div class="flex justify-center mb-4 space-x-4">
-    <button class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-xl shadow">▶ เริ่มทั้งหมด</button>
-    <button class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-xl shadow">■ หยุดทั้งหมด</button>
+    <button id="start-all" class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-xl shadow">▶ เริ่มทั้งหมด</button>
+    <button id="stop-all" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-xl shadow">■ หยุดทั้งหมด</button>
   </div>
 
   <div id="bot-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -53,14 +53,49 @@
         </div>
         <p class="text-sm text-gray-300">กระเป๋า: <span class="font-mono">${bot.wallet}</span></p>
         <div class="flex items-center space-x-2">
-          <button class="bg-green-500 hover:bg-green-400 px-4 py-1 rounded">เริ่ม</button>
-          <button class="bg-red-500 hover:bg-red-400 px-4 py-1 rounded">หยุด</button>
-          <button class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded">Connect Wallet</button>
+          <button class="start-btn bg-green-500 hover:bg-green-400 px-4 py-1 rounded">เริ่ม</button>
+          <button class="stop-btn bg-red-500 hover:bg-red-400 px-4 py-1 rounded">หยุด</button>
+          <button class="connect-btn bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded">Connect Wallet</button>
         </div>
       `;
 
       grid.appendChild(card);
+
+      // ผูก event ให้ปุ่มแต่ละบอท
+      const startBtn = card.querySelector(".start-btn");
+      const stopBtn = card.querySelector(".stop-btn");
+      const connectBtn = card.querySelector(".connect-btn");
+
+      startBtn.addEventListener("click", () => {
+        alert(`เริ่มทำงานบอท: ${bot.name}`);
+        // TODO: ใส่โค้ดเริ่มบอทจริง ๆ ที่นี่
+      });
+
+      stopBtn.addEventListener("click", () => {
+        alert(`หยุดทำงานบอท: ${bot.name}`);
+        // TODO: ใส่โค้ดหยุดบอทจริง ๆ ที่นี่
+      });
+
+      connectBtn.addEventListener("click", () => {
+        alert(`เชื่อมต่อวอลเล็ทสำหรับบอท: ${bot.name}`);
+        // TODO: ใส่โค้ดเชื่อมต่อ Wallet เช่น MetaMask ที่นี่
+      });
+    });
+
+    // ผูก event ปุ่ม เริ่มทั้งหมด และ หยุดทั้งหมด ด้านบน
+    const startAllBtn = document.getElementById("start-all");
+    const stopAllBtn = document.getElementById("stop-all");
+
+    startAllBtn.addEventListener("click", () => {
+      alert("เริ่มทำงานบอททั้งหมด");
+      // TODO: ใส่โค้ดเริ่มบอททั้งหมด
+    });
+
+    stopAllBtn.addEventListener("click", () => {
+      alert("หยุดทำงานบอททั้งหมด");
+      // TODO: ใส่โค้ดหยุดบอททั้งหมด
     });
   </script>
 </body>
 </html>
+
