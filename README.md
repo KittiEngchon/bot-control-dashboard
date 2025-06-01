@@ -99,3 +99,54 @@ Sell Wall Bot
 Trend Rider Bot
 
 ติดตามเทรนด์และปรับกลยุทธ์ตามแนวโน้มตลาด
+
+bot-control-dashboard/
+│
+├── public/                     # ไฟล์สาธารณะ เช่น index.html, favicon, static assets
+│   ├── index.html              # หน้าเว็บหลัก UI
+│   ├── favicon.ico
+│   └── assets/                # รูปภาพ, ไอคอน, CSS, JS แบบคงที่
+│
+├── src/                       # โค้ดหลักของโปรเจกต์
+│   ├── bots/                  # โฟลเดอร์บอทแยกตามชื่อบอท
+│   │   ├── marketMakerBot.js
+│   │   ├── arbitrageBot.js
+│   │   ├── impactBot.js
+│   │   ├── rebalancerBot.js
+│   │   ├── autoSwapperBot.js
+│   │   ├── multiArbBot.js
+│   │   ├── portfolioAdjustBot.js
+│   │   ├── volumeSimulatorBot.js
+│   │   ├── buyWallBot.js
+│   │   ├── sellWallBot.js
+│   │   └── trendRiderBot.js
+│   │
+│   ├── components/            # React/Vue/หรือ UI components (ถ้าใช้ framework)
+│   │   ├── Dashboard.js       # หน้าแดชบอร์ดหลัก
+│   │   ├── WalletConnect.js   # โมดูลเชื่อมต่อ MetaMask / Wallet
+│   │   ├── BotStatus.js       # แสดงสถานะบอทแบบเรียลไทม์
+│   │   └── SettingsPanel.js   # ตั้งค่าบอท, tick, token, frequency
+│   │
+│   ├── eventBus.js            # โมดูล Event Bus สำหรับสื่อสารบอทในระบบ
+│   ├── walletManager.js       # จัดการกระเป๋าแยกของบอทแต่ละตัว
+│   ├── api.js                 # เรียกใช้ API หรือเชื่อม QuickSwap/SushiSwap
+│   ├── config.js              # ตั้งค่าพื้นฐาน เช่น network, contract addresses
+│   └── index.js               # จุดเริ่มต้นของแอป (entry point)
+│
+├── wallets/                   # ไฟล์เก็บข้อมูล wallet แยกแต่ละบอท (เช่น private keys, address) - ควรเก็บปลอดภัย
+│   ├── marketMakerWallet.json
+│   ├── arbitrageWallet.json
+│   └── ...                   # wallets ของบอทแต่ละตัว
+│
+├── server/                    # โค้ด backend (ถ้ามี)
+│   ├── server.js              # รันเว็บเซิร์ฟเวอร์ (เช่น Node.js/Express)
+│   └── socket.js              # websocket สำหรับ real-time event
+│
+├── tests/                     # โฟลเดอร์ทดสอบระบบ (unit tests, integration tests)
+│   ├── bots.test.js
+│   └── walletManager.test.js
+│
+├── .env                       # ตัวแปรแวดล้อม เช่น API keys, Private keys (ไม่ควร commit)
+├── package.json               # รายละเอียดโปรเจกต์และ dependencies (ถ้าใช้ Node.js)
+├── README.md                  # เอกสารโปรเจกต์
+└── webpack.config.js (หรือไฟล์ config bundler อื่นๆ)
