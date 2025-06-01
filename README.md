@@ -41,48 +41,46 @@ git clone https://github.com/KittiEngchon/bot-control-dashboard.git
 cd bot-control-dashboard
 
 bot-control-dashboard/
-├── bots/                         # โฟลเดอร์รวมบอททั้งหมด
-│   ├── sentinel/
-│   │   ├── index.js              # โค้ดหลักบอท
-│   │   └── config.json           # ค่าตั้งเฉพาะบอทนี้
-│   ├── sniper/
-│   │   ├── index.js
-│   │   └── config.json
-│   └── trader/
-│       ├── index.js
-│       └── config.json
+├── public/                         # หน้าเว็บ HTML + assets
+│   └── index.html                  # UI หลักควบคุมบอท
 
-├── wallets/                      # Private Key ของแต่ละบอท (ต้องเข้ารหัสจริงในโปรดักชัน)
-│   ├── sentinel.json
-│   ├── sniper.json
-│   └── trader.json
+├── src/
+│   ├── bots/                       # บอท 11 ตัวแยกโฟลเดอร์
+│   │   ├── bot01-sniper/
+│   │   ├── bot02-sentinel/
+│   │   └── ... bot11-analytics/
 
-├── dex/                          # โมดูลเชื่อมต่อ DEX
-│   ├── router.js                 # เรียกใช้ QuickSwap / SushiSwap ได้ในไฟล์เดียว
-│   ├── addresses.js              # เก็บ Router Address ของแต่ละ DEX
-│   └── abis/
-│       └── uniswap-v2-router.json
+│   ├── wallets/                    # wallet แต่ละบอท (เข้ารหัสจริงในโปรดักชัน)
+│   │   ├── bot01-sniper.json
+│   │   └── ...
 
-├── core/                         # โมดูลหลักของระบบควบคุม
-│   ├── bot-engine.js             # สั่งรันทุกบอทแบบประสานกัน
-│   ├── event-bus.js              # ส่งข้อมูลระหว่างบอท
-│   └── bot-manager.js            # โหลดและจัดการบอทตาม config
+│   ├── dex/                       # โมดูลเชื่อม QuickSwap, SushiSwap
+│   │   ├── router.js
+│   │   └── addresses.js
 
-├── ui/                           # Frontend UI (เชื่อม MetaMask)
-│   ├── control-panel.js          # UI ควบคุมแต่ละบอท
-│   ├── wallet-connector.js       # ใช้เชื่อม MetaMask
-│   └── status-panel.js
+│   ├── core/                      # ตัวกลางระบบ
+│   │   ├── bot-engine.js
+│   │   ├── event-bus.js
+│   │   └── bot-manager.js
 
-├── utils/
-│   ├── wallet-utils.js           # โหลด wallet (จากไฟล์) ให้บอทแต่ละตัว
-│   └── logger.js
+│   ├── ui/                       # UI + เชื่อม MetaMask
+│   │   ├── dashboard.js
+│   │   ├── wallet-connector.js
+│   │   └── bot-control-panel.js
 
-├── config/
-│   └── system-config.json        # ตั้งค่าทั่วไป เช่น ChainID, token base
+│   ├── utils/
+│   │   ├── wallet-utils.js
+│   │   └── logger.js
 
-├── index.js                      # จุดเริ่มรันระบบ
-├── index.html                    # หน้าเว็บ UI
+│   └── config/
+│       └── system-config.json
+
+├── index.js                      # entry point ฝั่ง Node.js (backend controller)
+
+├── package.json
+
 └── README.md
+
 
 
 
