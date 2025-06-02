@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bot Control Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-4">
   <header class="mb-6 text-center">
@@ -19,7 +18,7 @@
   </div>
 
   <div id="bot-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- บอทจะถูกโหลดแบบไดนามิกจาก JavaScript -->
+    <!-- Bot cards will be inserted here -->
   </div>
 
   <script>
@@ -41,21 +40,34 @@
 
     bots.forEach((bot, index) => {
       const card = document.createElement("div");
-      card.className = "bg-gray-800 rounded-2xl p-4 shadow-md space-y-3";
+      card.className = "bg-gray-800 rounded-2xl p-4 shadow-md space-y-4";
 
       card.innerHTML = `
         <div class="flex items-center space-x-4">
-          <img src="assets/bot${index + 1}.png" alt="Bot Avatar" class="w-12 h-12 rounded-full bg-white" />
+          <img src="https://placehold.co/60x60?text=Bot${index + 1}" alt="Bot Avatar" class="w-12 h-12 rounded-full bg-white" />
           <div>
             <h2 class="text-xl font-semibold">${bot.name}</h2>
             <p class="text-sm text-gray-400">${bot.role}</p>
           </div>
         </div>
         <p class="text-sm text-gray-300">กระเป๋า: <span class="font-mono">${bot.wallet}</span></p>
-        <div class="flex items-center space-x-2">
+
+        <div class="grid grid-cols-2 gap-2 text-sm text-gray-200 mt-2">
+          <p>💰 Wallet Balance: <span class="text-white font-semibold">$5.00</span></p>
+          <p>📊 Open Positions: <span class="text-white font-semibold">2</span></p>
+          <p>📈 ROI 24h: <span class="text-green-400 font-semibold">+3.2%</span></p>
+          <p>🎯 Win Rate: <span class="text-blue-400 font-semibold">61%</span></p>
+          <p>🏅 Reward Score: <span class="text-amber-400 font-semibold">+12.5</span></p>
+          <p>⚠️ Risk Level: <span class="text-yellow-400 font-semibold">Medium</span></p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-3">
           <button class="start-btn bg-green-500 hover:bg-green-400 px-4 py-1 rounded">เริ่ม</button>
           <button class="stop-btn bg-red-500 hover:bg-red-400 px-4 py-1 rounded">หยุด</button>
           <button class="connect-btn bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded">Connect Wallet</button>
+          <button class="bg-yellow-500 hover:bg-yellow-400 text-black px-3 py-1 rounded">Pause</button>
+          <button class="bg-gray-500 hover:bg-gray-400 text-white px-3 py-1 rounded">Reset</button>
+          <button class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1 rounded">Edit</button>
         </div>
       `;
 
@@ -81,18 +93,16 @@
       });
     });
 
-    const startAllBtn = document.getElementById("start-all");
-    const stopAllBtn = document.getElementById("stop-all");
-
-    startAllBtn.addEventListener("click", () => {
+    document.getElementById("start-all").addEventListener("click", () => {
       alert("เริ่มทำงานบอททั้งหมด");
-      // TODO: ใส่โค้ดเริ่มบอททั้งหมด
+      // TODO: เรียกฟังก์ชัน start สำหรับทุกบอท
     });
 
-    stopAllBtn.addEventListener("click", () => {
+    document.getElementById("stop-all").addEventListener("click", () => {
       alert("หยุดทำงานบอททั้งหมด");
-      // TODO: ใส่โค้ดหยุดบอททั้งหมด
+      // TODO: เรียกฟังก์ชัน stop สำหรับทุกบอท
     });
   </script>
 </body>
 </html>
+
