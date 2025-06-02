@@ -3,35 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tick Settings</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Market Maker Tick Settings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-    <h2>Market Maker Tick Settings</h2>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+  <div class="bg-gray-800 p-8 rounded-2xl shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">🎯 Tick Settings</h2>
 
-    <label for="token0">Token 0 (Base):</label>
-    <input type="text" id="token0" placeholder="e.g. USDC" />
+    <div class="space-y-4">
+      <div>
+        <label for="token0" class="block text-sm mb-1">Token 0 (Base):</label>
+        <input type="text" id="token0" placeholder="e.g. USDC" class="w-full px-3 py-2 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      </div>
 
-    <label for="token1">Token 1 (Quote):</label>
-    <input type="text" id="token1" placeholder="e.g. MATIC" />
+      <div>
+        <label for="token1" class="block text-sm mb-1">Token 1 (Quote):</label>
+        <input type="text" id="token1" placeholder="e.g. MATIC" class="w-full px-3 py-2 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      </div>
 
-    <label for="tickLower">Tick Lower:</label>
-    <input type="number" id="tickLower" placeholder="e.g. 2100" />
+      <div>
+        <label for="tickLower" class="block text-sm mb-1">Tick Lower:</label>
+        <input type="number" id="tickLower" placeholder="e.g. 2100" class="w-full px-3 py-2 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      </div>
 
-    <label for="tickUpper">Tick Upper:</label>
-    <input type="number" id="tickUpper" placeholder="e.g. 2500" />
+      <div>
+        <label for="tickUpper" class="block text-sm mb-1">Tick Upper:</label>
+        <input type="number" id="tickUpper" placeholder="e.g. 2500" class="w-full px-3 py-2 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      </div>
 
-    <button onclick="saveTickSettings()">Save Settings</button>
+      <button onclick="saveTickSettings()" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-semibold transition duration-200">
+        💾 Save Settings
+      </button>
 
-    <p id="status"></p>
+      <p id="status" class="mt-4 text-center text-sm text-green-400"></p>
+    </div>
   </div>
 
   <script src="tick-settings.js"></script>
-</body>
-</html>
-
-    }
-  </script>
 </body>
 </html>
